@@ -33,55 +33,55 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 public\
 -images\
--index.html\
+-index.html
 
 src\
 -actions\
 --actionType.js\
---index.js\
+--index.js
 
 -components\
 --AppLoading\
----index.jsx\
+---index.jsx
 
 --Header\
----index.jsx\
+---index.jsx
 
 --Home\
----index.jsx\
+---index.jsx
 
 --LeftSide\
----index.jsx\
+---index.jsx
 
 --Main\
----index.jsx\
+---index.jsx
 
 --RightSide\
----index.jsx\
+---index.jsx
 
 --Login\
----index.jsx\
+---index.jsx
 
 --PostModal\
----index.jsx\
+---index.jsx
 
 -hooks\
---useActions.js\
+--useActions.js
 
 -reducers\
 --articleReducer.js\
 --index.js\
---userReducer.js\
+--userReducer.js
 
 -store\
--index.js\
+-index.js
 
--App.css\
+-App.css
 
--App.js\
+-App.js
 
--firebase.js\
+-firebase.js
 
--index.css\
+-index.css
 
--index.js\
+-index.js
