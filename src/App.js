@@ -1,23 +1,38 @@
-import logo from './logo.svg';
+// import { useEffect } from 'react';
 import './App.css';
+import Login from './components/Login';
+import Header from './components/Header';
+import Home from './components/Home';
+import { useEffect } from 'react';
+import { useActions } from './hooks/useActions';
+import { useSelector } from 'react-redux';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import AppLoading from './components/AppLoading';
+import { auth } from './firebase';
 
-function App() {
+function App(props) {
+  const { getUserAuth } = useActions();
+  const [user, loading] = useAuthState(auth);
+
+  useEffect(() => {
+    getUserAuth();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {loading && <AppLoading show={true} />}
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <Login />
+          </Route>
+          <Route path="/home">
+            <Header />
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }
