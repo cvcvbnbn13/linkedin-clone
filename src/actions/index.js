@@ -113,19 +113,41 @@ export const postArticle = payload => {
           doc.update({ id: doc.id });
           dispatch(setLoading(false));
         });
+    } else if (!payload.video && !payload.image) {
+      db.collection('articles')
+        .add({
+          actor: {
+            description: payload.user.email,
+            title: payload.user.displayName,
+            date: payload.timestamp,
+            image: payload.user.photoURL,
+          },
+          video: '',
+          shareImage: '',
+          comments: 0,
+          description: payload.description,
+          id: '',
+        })
+        .then(doc => {
+          doc.update({ id: doc.id });
+          dispatch(setLoading(false));
+        });
     }
   };
 };
 
 export const getArticle = () => {
-  return dispatch => {
+  return async dispatch => {
     let payload;
-    db.collection('articles')
+    dispatch(setLoading(true));
+    await db
+      .collection('articles')
       .orderBy('actor.date', 'desc')
       .onSnapshot(snapshot => {
         payload = snapshot.docs.map(doc => doc.data());
         dispatch({ type: GET_ARTICLE, payload: payload });
       });
+    dispatch(setLoading(false));
   };
 };
 
@@ -134,6 +156,7 @@ export const deleteArticle = id => {
     dispatch(setLoading(true));
     await db.collection('articles').doc(id).delete();
     dispatch({ type: DELETE_ARTICLE });
+    dispatch(getArticle());
     dispatch(setLoading(false));
   };
 };

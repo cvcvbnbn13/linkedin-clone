@@ -146,6 +146,10 @@ const Search = styled.div`
       height: 35px;
       border-color: #dce6f1;
       vertical-align: text-top;
+      @media (max-width: 768px) {
+        width: 0;
+        background-color: #fff;
+      }
     }
   }
 `;
@@ -166,13 +170,6 @@ const SearchIcon = styled.div`
 const Nav = styled.nav`
   margin-left: auto;
   display: block;
-  @media (max-width: 768px) {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    background: #fff;
-    width: 100%;
-  }
 `;
 
 const NavListWrap = styled.ul`
@@ -219,9 +216,6 @@ const NavList = styled.li`
       color: rgba(0, 0, 0, 0.6);
       display: flex;
       align-items: center;
-    }
-    @media (max-width: 768px) {
-      min-width: 70px;
     }
   }
 

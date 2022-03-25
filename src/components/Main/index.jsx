@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import db from '../../firebase';
 import React, { useState, useEffect } from 'react';
 
 import PostModal from '../PostModal';
@@ -11,7 +10,6 @@ import ReactPlayer from 'react-player';
 
 const Main = props => {
   const [showModal, setShowModal] = useState('close');
-  const [showAction, setShowAction] = useState(false);
   const [editing, setEditing] = useState(false);
 
   const { user } = useSelector(state => state.userState);
@@ -37,25 +35,19 @@ const Main = props => {
     }
   };
 
-  const handleShowAction = () => {
-    setShowAction(!showAction);
-  };
-
-  const handleEdit = e => {
-    e.preventDefault();
-    if (e.target !== e.currentTarget) {
-      return;
-    }
-    setShowModal('open');
-    setEditing(true);
-    setShowAction(false);
-  };
+  // const handleEdit = e => {
+  //   e.preventDefault();
+  //   if (e.target !== e.currentTarget) {
+  //     return;
+  //   }
+  //   setShowModal('open');
+  //   setEditing(true);
+  // };
 
   const handleDelete = id => {
     const del = window.confirm('確定要刪除該動態嗎?');
     if (del) {
       deleteArticle(id);
-      setShowAction(false);
     }
   };
 
@@ -99,6 +91,7 @@ const Main = props => {
       </ShareBox>
       {loading && <AppLoading show={false} />}
       <Content>
+        {articles.length === 0 && <AppLoading show={false} />}
         {articles.length > 0 &&
           articles.map((article, key) => (
             <Article key={key}>
@@ -114,20 +107,16 @@ const Main = props => {
                     </span>
                   </div>
                 </a>
-                <button onClick={handleShowAction}>
-                  <img
-                    src="/images/ellipsis.svg"
-                    alt=""
-                    onClick={handleShowAction}
-                  />
-                </button>
-                <ArticleAction
-                  style={
-                    showAction ? { display: 'block' } : { display: 'none' }
-                  }
-                >
-                  <a onClick={() => handleDelete(article.id)}>刪除文章</a>
-                </ArticleAction>
+                <Dropbox>
+                  <input type="checkbox" id={`dropdown${article.id}`} />
+
+                  <label htmlFor={`dropdown${article.id}`}>
+                    <img src="/images/ellipsis.svg" alt="" />
+                  </label>
+                  <ArticleAction>
+                    <a onClick={() => handleDelete(article.id)}>刪除文章</a>
+                  </ArticleAction>
+                </Dropbox>
               </SharedActor>
               <Description>{article.description}</Description>
               <SharedImg>
@@ -268,6 +257,7 @@ const Article = styled(CommonCard)`
 `;
 
 const ArticleAction = styled.div`
+  display: none;
   position: absolute;
   right: 10px;
   top: 2.5rem;
@@ -340,6 +330,25 @@ const SharedActor = styled.div`
   }
 `;
 
+const Dropbox = styled.div`
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  input {
+    display: none;
+
+    &:checked ~ ${ArticleAction} {
+      display: block;
+    }
+  }
+`;
+
 const Description = styled.div`
   padding: 0 16px;
   overflow: hidden;
@@ -359,6 +368,8 @@ const SharedImg = styled.div`
     object-fit: contain;
     width: 100%;
     height: 100%;
+    max-width: 500px;
+    max-height: 500px;
   }
 `;
 
