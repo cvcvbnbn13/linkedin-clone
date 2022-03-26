@@ -227,6 +227,15 @@ const NavList = styled.li`
       }
     }
   }
+
+  @media (max-width: 768px) {
+    display: none;
+
+    &:nth-child(6),
+    &:last-child {
+      display: flex;
+    }
+  }
 `;
 
 const SignOut = styled.div`
